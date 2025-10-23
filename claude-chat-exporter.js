@@ -10,7 +10,7 @@ function setupClaudeExporter() {
     messageGroup: '.group',
     copyButton: 'button[data-testid="action-bar-copy"]',
     editTextarea: 'textarea',
-    conversationTitle: '[data-testid="chat-menu-trigger"] .truncate, button[data-testid="chat-menu-trigger"] div.truncate'
+    conversationTitle: '[data-testid="chat-title-button"] .truncate, [data-testid="chat-menu-trigger"] .truncate, button[data-testid="chat-menu-trigger"] div.truncate'
   };
 
   const DELAYS = {
