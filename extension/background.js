@@ -8,7 +8,7 @@ chrome.action.onClicked.addListener((tab) => {
     // allowing it to intercept navigator.clipboard.writeText
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['exporter.js'],
+      files: ['claude-chat-exporter.js'],
       world: 'MAIN'  // Run in page's context, not isolated world
     }).then(() => {
       console.log('Claude chat exporter script injected successfully');
