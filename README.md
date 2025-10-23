@@ -1,42 +1,22 @@
 # Claude Chat Exporter
 
-A JavaScript tool that exports Claude.ai conversations with **perfect markdown fidelity** by leveraging Claude's native copy functionality. Get complete conversations with both human and AI messages including tables, complex formatting, and all elements that Claude supports.
+A JavaScript tool that exports Claude.ai conversations to markdown format. Uses Claude's native copy functionality to preserve formatting and supports tables, code blocks, and other complex elements.
 
 ## Features
 
-- **🎯 Perfect Markdown Fidelity** - Uses Claude's copy function for exact output
-- **📊 Complete Element Support** - Tables, math, complex formatting, everything
-- **📁 Smart Filename Generation** - Uses actual conversation title
-- **🔧 Future-Proof** - Automatically supports new Claude markdown features
-- **📈 Real-Time Status** - Visual progress indicator during export
-- **🛡️ Robust Error Handling** - Comprehensive error detection and recovery
-- **⚙️ Easy Maintenance** - Modular selectors for UI changes
+- Preserves markdown fidelity using Claude's copy function
+- Complete element support (tables, math, code blocks, formatting)
+- Smart filename generation using conversation title
+- Real-time status indicator during export
 
 ## How It Works
 
-This script combines two reliable methods:
+The script uses two methods to capture conversation content:
 
 1. **Human Messages**: Simulates clicking edit buttons to access original message content
 2. **Claude Responses**: Intercepts clipboard when copy buttons are clicked
-3. **Perfect Output**: Uses Claude's exact markdown formatting for all elements
 
-### Why Copy Button Approach?
-
-Instead of manually parsing HTML and converting to markdown (which misses tables and complex elements), this tool uses **Claude's own copy button** to ensure 100% accurate markdown output. Combined with edit button simulation for human messages, you get perfect conversation exports.
-
-```
-❌ Manual HTML Parsing:
-- Misses tables and complex elements
-- Requires constant updates for new features
-- Error-prone formatting conversion
-- Maintenance nightmare
-
-✅ Copy Button Method:
-- Perfect markdown fidelity
-- Automatic support for ALL elements
-- Future-proof against new features
-- Zero formatting edge cases
-```
+This approach ensures accurate markdown output without manually parsing HTML.
 
 ## Usage
 
