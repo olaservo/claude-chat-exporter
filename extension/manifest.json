@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Claude Chat Exporter",
+  "version": "1.0.0",
+  "description": "Export Claude conversations to markdown files with a single click",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_title": "Export Claude Chat",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "host_permissions": [
+    "https://claude.ai/*"
+  ]
+}
