@@ -249,6 +249,8 @@ function setupClaudeExporter() {
       statusDiv.textContent = `Error: ${error.message}`;
       statusDiv.style.background = '#f44336';
       console.error('Export failed:', error);
+    } finally {
+      cleanup();
     }
   }
 
@@ -269,11 +271,19 @@ function setupClaudeExporter() {
     statusDiv.style.background = '#4CAF50';
 
     console.log('Export complete!');
-    setTimeout(cleanup, 3000);
+
+    // Remove status div after showing success message
+    setTimeout(() => {
+      if (document.body.contains(statusDiv)) {
+        document.body.removeChild(statusDiv);
+      }
+    }, 3000);
   }
 
   function cleanup() {
+    // Always restore original clipboard function
     navigator.clipboard.writeText = originalWriteText;
+    // Remove status div immediately on error
     if (document.body.contains(statusDiv)) {
       document.body.removeChild(statusDiv);
     }
