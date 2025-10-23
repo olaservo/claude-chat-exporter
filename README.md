@@ -1,8 +1,27 @@
 # Claude Chat Exporter
 
-Exports Claude.ai conversations to markdown format by leveraging Claude's copy functionality and edit buttons.
+Export Claude.ai conversations to markdown files.
 
-## Usage
+## Chrome Extension
+
+### Installation
+
+1. Download this repository (Code → Download ZIP)
+2. Extract the ZIP file
+3. Open Chrome and go to `chrome://extensions/`
+4. Enable "Developer mode" (toggle in top-right)
+5. Click "Load unpacked" and select the `extension` folder
+6. The extension icon will appear in your toolbar
+
+### Usage
+
+1. Navigate to a conversation on claude.ai
+2. Click the extension icon
+3. The conversation downloads as a markdown file
+
+## Manual Script Method
+
+Alternatively, run the script directly in the browser console:
 
 1. Open your conversation with Claude
 2. Open browser developer console (F12)
