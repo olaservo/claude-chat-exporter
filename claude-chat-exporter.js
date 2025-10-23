@@ -54,7 +54,15 @@ function setupClaudeExporter() {
 
   function findEditButton(messageGroup) {
     const allButtons = messageGroup.querySelectorAll('button');
-    editButton = Array.from(allButtons).find(btn =>
+
+    // Try to find edit button by position - it's typically the second button
+    // (first is regenerate, second is edit)
+    if (allButtons.length >= 2) {
+      return allButtons[1];
+    }
+
+    // Fallback: try the old text-based method
+    const editButton = Array.from(allButtons).find(btn =>
       btn.textContent.trim().toLowerCase() === 'edit'
     );
 
