@@ -79,7 +79,6 @@ function setupClaudeExporter() {
       const editButton = findEditButton(messageGroup);
 
       if (editButton) {
-        console.log(`📝 Extracting message ${messageIndex + 1} via edit`);
         editButton.click();
         await delay(DELAYS.edit);
 
@@ -98,10 +97,9 @@ function setupClaudeExporter() {
         if (content) return content;
       }
 
-      console.warn(`Failed to extract message ${messageIndex + 1}:`, `Edit button not found`);
 
     } catch (error) {
-      console.warn(`Failed to extract message ${messageIndex + 1}:`, error);
+      console.error('Failed to extract message:', error);
     } finally {
       // Clean up hover state
       messageContainer.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
@@ -109,7 +107,7 @@ function setupClaudeExporter() {
   }
 
   async function extractAllHumanMessages() {
-    console.log('🔄 Extracting human messages...');
+    console.log('Extracting human messages...');
     const userMessages = document.querySelectorAll(SELECTORS.userMessage);
 
     for (let i = 0; i < userMessages.length; i++) {
@@ -122,21 +120,37 @@ function setupClaudeExporter() {
       updateStatus();
     }
 
-    console.log(`✅ Extracted ${humanMessages.length} human messages`);
+    console.log(`Extracted ${humanMessages.length} human messages`);
   }
 
-  // Intercept clipboard writes for Claude responses
-  navigator.clipboard.writeText = function(text) {
-    if (interceptorActive && text && text.length > 20) {
-      console.log(`📋 Captured Claude response ${capturedResponses.length + 1}`);
-      capturedResponses.push({
-        type: 'claude',
-        content: text,
-        timestamp: Date.now()
-      });
-      updateStatus();
+  // Intercept clipboard writes for Claude responses using Proxy
+  const clipboardHandler = {
+    get(target, prop) {
+      if (prop === 'writeText') {
+        return function(text) {
+          if (interceptorActive && text && text.length > 20) {
+            console.log(`Captured Claude response ${capturedResponses.length + 1}`);
+            capturedResponses.push({
+              type: 'claude',
+              content: text,
+              timestamp: Date.now()
+            });
+            updateStatus();
+          }
+          // Call original to actually copy to clipboard
+          return originalWriteText.call(target, text);
+        };
+      }
+      return target[prop];
     }
   };
+
+  // Replace navigator.clipboard with proxied version
+  Object.defineProperty(navigator, 'clipboard', {
+    value: new Proxy(navigator.clipboard, clipboardHandler),
+    writable: false,
+    configurable: true
+  });
 
   // Create status indicator
   const statusDiv = document.createElement('div');
@@ -159,7 +173,11 @@ function setupClaudeExporter() {
       throw new Error('No Claude copy buttons found!');
     }
 
-    console.log(`🚀 Clicking ${copyButtons.length} Claude copy buttons...`);
+    console.log(`Clicking ${copyButtons.length} Claude copy buttons...`);
+
+    // Ensure focus before clicking copy buttons
+    window.focus();
+    await delay(100);
 
     // Click all copy buttons with minimal delays
     for (let i = 0; i < copyButtons.length; i++) {
@@ -168,10 +186,9 @@ function setupClaudeExporter() {
         if (button.offsetParent !== null) {
           button.scrollIntoView({ behavior: 'instant', block: 'nearest' });
           button.click();
-          console.log(`🖱️ Clicked copy button ${i + 1}/${copyButtons.length}`);
         }
       } catch (error) {
-        console.warn(`Failed to click button ${i + 1}:`, error);
+        console.error('Failed to click copy button:', error);
       }
 
       // Only delay between clicks, not after the last one
@@ -204,14 +221,14 @@ function setupClaudeExporter() {
 
     while (elapsed < maxWaitTime) {
       if (capturedResponses.length >= expectedCount) {
-        console.log(`✅ All ${expectedCount} responses captured in ${elapsed}ms`);
+        console.log(`All ${expectedCount} responses captured`);
         return;
       }
       await delay(checkInterval);
       elapsed += checkInterval;
     }
 
-    console.warn(`⚠️ Timeout: Only captured ${capturedResponses.length}/${expectedCount} responses`);
+    console.warn(`Timeout: Only captured ${capturedResponses.length}/${expectedCount} responses`);
   }
 
   async function startExport() {
@@ -248,10 +265,10 @@ function setupClaudeExporter() {
     const filename = `${getConversationTitle()}.md`;
     downloadMarkdown(markdown, filename);
 
-    statusDiv.textContent = `✅ Downloaded: ${filename}`;
+    statusDiv.textContent = `Downloaded: ${filename}`;
     statusDiv.style.background = '#4CAF50';
 
-    console.log('🎉 Export complete!');
+    console.log('Export complete!');
     setTimeout(cleanup, 3000);
   }
 
@@ -263,8 +280,12 @@ function setupClaudeExporter() {
   }
 
   // Initialize
+  // Ensure window is focused for clipboard access
+  window.focus();
   updateStatus();
-  setTimeout(startExport, 1000);
+
+  // Longer delay when running from extension to ensure focus
+  setTimeout(startExport, 1500);
 }
 
 // Run the exporter

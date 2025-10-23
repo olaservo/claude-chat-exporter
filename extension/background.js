@@ -3,10 +3,13 @@
 chrome.action.onClicked.addListener((tab) => {
   // Check if we're on a Claude.ai page
   if (tab.url && tab.url.includes('claude.ai')) {
-    // Inject and execute the exporter script
+    // Inject and execute the exporter script in the MAIN world
+    // This is critical - MAIN world means it runs in the page's context,
+    // allowing it to intercept navigator.clipboard.writeText
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['exporter.js']
+      files: ['exporter.js'],
+      world: 'MAIN'  // Run in page's context, not isolated world
     }).then(() => {
       console.log('Claude chat exporter script injected successfully');
     }).catch((error) => {

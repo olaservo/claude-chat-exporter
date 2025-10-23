@@ -5,7 +5,9 @@
   "description": "Export Claude conversations to markdown files with a single click",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "clipboardWrite",
+    "clipboardRead"
   ],
   "action": {
     "default_title": "Export Claude Chat",

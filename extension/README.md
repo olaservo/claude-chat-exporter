@@ -34,6 +34,8 @@ A Chrome extension that exports Claude conversations to markdown files with a si
    - Download a markdown file with the complete conversation
 4. The file will be named after your conversation title
 
+**Tip**: A blue status box will appear in the top-right showing progress (e.g., "Human: 4 | Claude: 4")
+
 ## Features
 
 - One-click export from extension toolbar
