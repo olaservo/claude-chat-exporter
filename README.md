@@ -85,11 +85,6 @@ Chrome, Firefox, Safari, Edge
 - Make sure "Developer mode" is enabled in chrome://extensions/
 - Try clicking the reload button on the extension card
 
-**Manual script issues:**
-- Ensure conversation is fully loaded before running
-- If partial export, try refreshing and running again
-- Script shows message counts during export
-
 ## Limitations
 
 - Requires JavaScript enabled
